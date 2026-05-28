@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>100,000 Whys — The Thinking Challenge</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f0f0f;
+  --surface: #1a1a1a;
+  --surface-hover: #222222;
+  --border: #2a2a2a;
+  --text: #e8e4df;
+  --text-dim: #8a8580;
+  --accent: #c9a96e;
+  --accent-glow: rgba(201,169,110,0.15);
+  --correct: #4a9e6e;
+  --correct-bg: rgba(74,158,110,0.1);
+  --wrong: #c45c5c;
+  --wrong-bg: rgba(196,92,92,0.1);
+  --radius: 12px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+.grain {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+}
+
+.container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+  position: relative;
+  z-index: 1;
+}
+
+/* WELCOME SCREEN */
+.welcome {
+  text-align: center;
+  padding: 80px 0 40px;
+  animation: fadeUp 0.8s ease;
+}
+
+.welcome-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  padding: 6px 18px;
+  border-radius: 100px;
+  margin-bottom: 32px;
+}
+
+.welcome h1 {
+  font-family: 'Instrument Serif', serif;
+  font-size: clamp(36px, 7vw, 56px);
+  font-weight: 400;
+  line-height: 1.15;
+  margin-bottom: 20px;
+  color: var(--text);
+}
+
+.welcome h1 em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.welcome p {
+  font-size: 16px;
+  color: var(--text-dim);
+  max-width: 520px;
+  margin: 0 auto 40px;
+  line-height: 1.7;
+}
+
+.welcome-stats {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-bottom: 48px;
+}
+
+.welcome-stat {
+  text-align: center;
+}
+
+.welcome-stat-num {
+  font-family: 'Instrument Serif', serif;
+  font-size: 32px;
+  color: var(--accent);
+  display: block;
+}
+
+.welcome-stat-label {
+  font-size: 12px;
+  color: var(--text-dim);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.btn-start {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--accent);
+  color: var(--bg);
+  border: none;
+  padding: 16px 40px;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-start:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px var(--accent-glow);
+}
+
+/* REVIEW CARD */
+.review-card {
+  margin: 56px auto 0;
+  max-width: 480px;
+  background: linear-gradient(160deg, rgba(201,169,110,0.08), rgba(201,169,110,0.02));
+  border: 1px solid var(--accent);
+  border-radius: 16px;
+  padding: 32px 28px;
+  text-align: center;
+}
+
+.review-stars {
+  color: var(--accent);
+  font-size: 18px;
+  letter-spacing: 4px;
+  margin-bottom: 14px;
+}
+
+.review-card h3 {
+  font-family: 'Instrument Serif', serif;
+  font-size: 26px;
+  font-weight: 400;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+
+.review-card p {
+  font-size: 14px;
+  color: var(--text-dim);
+  line-height: 1.7;
+  max-width: 380px;
+  margin: 0 auto 22px;
+}
+
+.btn-review {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--accent);
+  color: var(--bg);
+  text-decoration: none;
+  padding: 14px 36px;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 100px;
+  transition: all 0.3s ease;
+}
+
+.btn-review:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px var(--accent-glow);
+}
+
+.review-thanks {
+  margin-top: 18px;
+  font-size: 12px;
+  color: var(--text-dim);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* SECTION SELECT */
+.section-select {
+  animation: fadeUp 0.6s ease;
+}
+
+.section-select h2 {
+  font-family: 'Instrument Serif', serif;
+  font-size: 32px;
+  font-weight: 400;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.section-select > p {
+  text-align: center;
+  color: var(--text-dim);
+  font-size: 14px;
+  margin-bottom: 36px;
+}
+
+.section-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+.section-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.section-card:hover {
+  background: var(--surface-hover);
+  border-color: var(--accent);
+  transform: translateX(4px);
+}
+
+.section-card.completed {
+  border-color: var(--correct);
+}
+
+.section-num {
+  font-family: 'Instrument Serif', serif;
+  font-size: 24px;
+  color: var(--accent);
+  min-width: 36px;
+  text-align: center;
+}
+
+.section-card.completed .section-num {
+  color: var(--correct);
+}
+
+.section-info {
+  flex: 1;
+}
+
+.section-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.section-subtitle {
+  font-size: 12px;
+  color: var(--text-dim);
+  font-style: italic;
+}
+
+.section-score {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--correct);
+  min-width: 50px;
+  text-align: right;
+}
+
+.section-arrow {
+  color: var(--text-dim);
+  font-size: 18px;
+  transition: transform 0.2s;
+}
+
+.section-card:hover .section-arrow {
+  transform: translateX(4px);
+  color: var(--accent);
+}
+
+.btn-all {
+  display: block;
+  width: 100%;
+  margin-top: 20px;
+  background: transparent;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  padding: 16px;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-all:hover {
+  background: var(--accent-glow);
+}
+
+/* QUIZ SCREEN */
+.quiz-screen {
+  animation: fadeUp 0.5s ease;
+}
+
+.quiz-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.quiz-part-label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.quiz-progress-text {
+  font-size: 13px;
+  color: var(--text-dim);
+}
+
+.progress-bar {
+  width: 100%;
+  height: 3px;
+  background: var(--border);
+  border-radius: 3px;
+  margin-bottom: 40px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 3px;
+  transition: width 0.5s ease;
+}
+
+.question-block {
+  animation: fadeUp 0.4s ease;
+}
+
+.question-number {
+  font-size: 12px;
+  color: var(--text-dim);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.question-text {
+  font-family: 'Instrument Serif', serif;
+  font-size: clamp(22px, 4.5vw, 28px);
+  font-weight: 400;
+  line-height: 1.4;
+  margin-bottom: 32px;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.option {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  font-size: 15px;
+  line-height: 1.55;
+  text-align: left;
+  width: 100%;
+  font-family: 'DM Sans', sans-serif;
+  color: var(--text);
+}
+
+.option:hover:not(.disabled) {
+  background: var(--surface-hover);
+  border-color: var(--accent);
+}
+
+.option-letter {
+  font-weight: 700;
+  font-size: 13px;
+  min-width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: var(--border);
+  color: var(--text-dim);
+  flex-shrink: 0;
+  margin-top: 1px;
+  transition: all 0.25s;
+}
+
+.option:hover:not(.disabled) .option-letter {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+.option.correct {
+  border-color: var(--correct);
+  background: var(--correct-bg);
+}
+
+.option.correct .option-letter {
+  background: var(--correct);
+  color: #fff;
+}
+
+.option.wrong {
+  border-color: var(--wrong);
+  background: var(--wrong-bg);
+}
+
+.option.wrong .option-letter {
+  background: var(--wrong);
+  color: #fff;
+}
+
+.option.disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+.option.correct.disabled, .option.wrong.disabled {
+  opacity: 1;
+}
+
+.explanation {
+  margin-top: 20px;
+  padding: 20px;
+  background: var(--surface);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-dim);
+  animation: fadeUp 0.3s ease;
+}
+
+.explanation strong {
+  color: var(--text);
+}
+
+.btn-next {
+  display: block;
+  width: 100%;
+  margin-top: 24px;
+  background: var(--accent);
+  color: var(--bg);
+  border: none;
+  padding: 16px;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all 0.3s;
+  animation: fadeUp 0.3s ease;
+}
+
+.btn-next:hover {
+  box-shadow: 0 4px 20px var(--accent-glow);
+}
+
+/* RESULTS */
+.results {
+  text-align: center;
+  animation: fadeUp 0.6s ease;
+  padding-top: 40px;
+}
+
+.results-score-ring {
+  width: 160px;
+  height: 160px;
+  margin: 0 auto 28px;
+  position: relative;
+}
+
+.results-score-ring svg {
+  transform: rotate(-90deg);
+}
+
+.results-score-ring .ring-bg {
+  fill: none;
+  stroke: var(--border);
+  stroke-width: 6;
+}
+
+.results-score-ring .ring-fill {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 6;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1.5s ease;
+}
+
+.results-score-num {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Instrument Serif', serif;
+  font-size: 42px;
+  color: var(--accent);
+}
+
+.results-score-num span {
+  font-size: 20px;
+  color: var(--text-dim);
+}
+
+.results h2 {
+  font-family: 'Instrument Serif', serif;
+  font-size: 28px;
+  font-weight: 400;
+  margin-bottom: 12px;
+}
+
+.results p {
+  color: var(--text-dim);
+  font-size: 15px;
+  max-width: 480px;
+  margin: 0 auto 36px;
+  line-height: 1.7;
+}
+
+.results-breakdown {
+  text-align: left;
+  margin-bottom: 32px;
+}
+
+.results-breakdown h3 {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.breakdown-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+}
+
+.breakdown-item:last-child {
+  border-bottom: none;
+}
+
+.breakdown-label {
+  flex: 1;
+  color: var(--text-dim);
+}
+
+.breakdown-score {
+  font-weight: 600;
+  min-width: 50px;
+  text-align: right;
+}
+
+.breakdown-bar {
+  width: 80px;
+  height: 4px;
+  background: var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.breakdown-bar-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 4px;
+  transition: width 1s ease;
+}
+
+.btn-group {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.btn-group .btn-start {
+  flex: 1;
+  justify-content: center;
+  min-width: 200px;
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  padding: 16px 40px;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex: 1;
+  min-width: 200px;
+}
+
+.btn-secondary:hover {
+  background: var(--accent-glow);
+}
+
+.hidden { display: none !important; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 500px) {
+  .container { padding: 24px 16px 60px; }
+  .welcome { padding: 40px 0 20px; }
+  .welcome-stats { gap: 24px; }
+  .btn-group { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+<div class="grain"></div>
+<div class="container" id="app">
+
+  <!-- WELCOME -->
+  <div class="welcome" id="welcomeScreen">
+    <div class="welcome-badge">Bonus Challenge</div>
+    <h1>The <em>Thinking</em> Challenge</h1>
+    <p>You read the book. But did the ideas actually land? This is not a memory test. It is a comprehension check. 48 questions across 12 domains. See where you are oriented and where the gaps are.</p>
+    <div class="welcome-stats">
+      <div class="welcome-stat">
+        <span class="welcome-stat-num">48</span>
+        <span class="welcome-stat-label">Questions</span>
+      </div>
+      <div class="welcome-stat">
+        <span class="welcome-stat-num">12</span>
+        <span class="welcome-stat-label">Domains</span>
+      </div>
+      <div class="welcome-stat">
+        <span class="welcome-stat-num">~20</span>
+        <span class="welcome-stat-label">Minutes</span>
+      </div>
+    </div>
+    <button class="btn-start" onclick="showSections()">Begin the Challenge &#8594;</button>
+
+    <div class="review-card">
+      <div class="review-stars">&#9733; &#9733; &#9733; &#9733; &#9733;</div>
+      <h3>Enjoying the book so far?</h3>
+      <p>If these questions made you think, a quick review would mean the world. It takes thirty seconds, and it helps other curious adults find their way to the book.</p>
+      <a class="btn-review" href="https://www.amazon.com/review/create-review/?channel=glance-detail&asin=B0F9DPGLT1&ie=UTF8" target="_blank" rel="noopener">Leave a Review &#8594;</a>
+      <div class="review-thanks">Thank you for reading.</div>
+    </div>
+  </div>
+
+  <!-- SECTION SELECT -->
+  <div class="section-select hidden" id="sectionScreen">
+    <h2>Choose Your Domain</h2>
+    <p>Take a single section or tackle them all. Your scores are saved as you go.</p>
+    <div class="section-grid" id="sectionGrid"></div>
+    <button class="btn-all" onclick="startFullQuiz()">Take All 48 Questions &#8594;</button>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="quiz-screen hidden" id="quizScreen">
+    <div class="quiz-header">
+      <span class="quiz-part-label" id="quizPartLabel"></span>
+      <span class="quiz-progress-text" id="quizProgressText"></span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="question-block" id="questionBlock"></div>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="results hidden" id="resultsScreen"></div>
+
+</div>
+
+<script>
+const SECTIONS = [
+  { num: "I", title: "Physical Reality", subtitle: "The Stage on Which Everything Else Happens" },
+  { num: "II", title: "Life and Biology", subtitle: "The Stuff You're Made Of" },
+  { num: "III", title: "Earth and the Natural World", subtitle: "The Only Home We're Going to Get" },
+  { num: "IV", title: "The Mysteries at the Frontier", subtitle: "Where Science Meets the Edge" },
+  { num: "V", title: "The Mind and Brain", subtitle: "Three Pounds That Generate Everything" },
+  { num: "VI", title: "Society and Civilization", subtitle: "Eight Billion Strangers, Mostly Cooperating" },
+  { num: "VII", title: "Economics and Resources", subtitle: "The Invisible Force Running Your Day" },
+  { num: "VIII", title: "Technology and the Made World", subtitle: "The Tools Rewiring You Right Now" },
+  { num: "IX", title: "Meaning, Purpose, and the Good Life", subtitle: "The Question That Won't Go Away" },
+  { num: "X", title: "Relationships and Connection", subtitle: "The Largest Determinant of Your Health" },
+  { num: "XI", title: "How to Think and How to Know", subtitle: "The Skill Behind Every Other Skill" },
+  { num: "XII", title: "The Examined Life and Integration", subtitle: "Putting It All Together" }
+];
+
+const QUESTIONS = [
+  // PART 1 — Physical Reality
+  [
+    { q: "Why do physicists say that 'nothing' may be impossible?", opts: ["Because religious traditions say so", "Because quantum fields are never perfectly still, even in empty space", "Because no one has ever created a perfect vacuum", "Because the math has not been done yet"], ans: 1, exp: "Quantum physics shows that even perfectly empty space contains fluctuating energy fields. Vacuum fluctuations produce particle pairs constantly, suggesting absolute nothingness may not be a possible state of reality." },
+    { q: "Why is asking 'what happened before the Big Bang' problematic?", opts: ["Because scientists refuse to answer it", "Because the evidence has been destroyed", "Because time itself began with the Big Bang, so there is no 'before'", "Because the universe is too old to measure"], ans: 2, exp: "In Einstein's framework, space and time are part of the universe itself. They began with the Big Bang. Asking what came 'before' smuggles in the concept of time, which did not yet exist." },
+    { q: "Why does your GPS depend on Einstein's theory of relativity?", opts: ["Because satellites use lasers guided by relativity equations", "Because satellite clocks tick at a different rate due to gravity and speed, requiring corrections", "Because GPS was invented by physicists who studied relativity", "Because the satellites orbit at the speed of light"], ans: 1, exp: "GPS satellites experience weaker gravity and high speed, causing their clocks to drift by about 38 microseconds per day. Without relativistic corrections, your GPS position would drift by kilometers daily." },
+    { q: "What does the accelerating expansion of the universe tell us?", opts: ["Gravity is getting stronger over time", "Something we call dark energy, which we do not understand, is pushing the universe apart", "The Big Bang is still happening", "The universe will eventually contract"], ans: 1, exp: "Discovered in 1998, the accelerating expansion implies that roughly 68% of the universe's energy is 'dark energy,' a placeholder name for something we cannot yet explain." }
+  ],
+  // PART 2 — Life and Biology
+  [
+    { q: "Why is the popular claim that you have '10x more bacteria than cells' wrong?", opts: ["Because bacteria are too small to count", "Because a 2016 recalculation showed the ratio is closer to 1:1", "Because the claim was invented by a supplement company", "Because humans have no bacteria at all inside them"], ans: 1, exp: "A team at the Weizmann Institute recalculated in 2016 using better data. The actual ratio is roughly 38 trillion bacteria to 30 trillion human cells, approximately one to one." },
+    { q: "Why is 'survival of the fittest' a misleading phrase?", opts: ["Because Darwin never used it", "Because 'fittest' means strongest and fastest", "Because it implies a brutal competition, when evolution also rewards cooperation, camouflage, and luck", "Because evolution has stopped in humans"], ans: 2, exp: "'Fittest' means best suited to a particular environment, not strongest. Evolution rewards whatever gets genes into the next generation, including cooperation, flexibility, and sometimes pure chance." },
+    { q: "Why do the 'boring basics' still beat every longevity supplement?", opts: ["Because supplements are illegal", "Because exercise, sleep, diet, and social connection each have decades of human data that no supplement can match", "Because supplements work but are too expensive", "Because the body cannot absorb supplements"], ans: 1, exp: "Exercise alone reduces all-cause mortality more reliably than any drug currently available. Sleep deprivation accelerates nearly every aging biomarker. No supplement on the market matches any single one of these basics." },
+    { q: "What does epigenetics tell us about the nature/nurture debate?", opts: ["Nature always wins", "Nurture always wins", "The debate is over because genes and environment interact constantly, each shaping the other", "Neither nature nor nurture matters"], ans: 2, exp: "Genes influence which environments you seek out, and environments influence which genes get expressed. The two forces are multiplicative, not additive. The question was wrong; the answer was always both." }
+  ],
+  // PART 3 — Earth and Natural World
+  [
+    { q: "Why is the sky blue during the day and red at sunset?", opts: ["Because the atmosphere changes color throughout the day", "Because of Rayleigh scattering: short blue wavelengths scatter more, but at sunset the longer path filters them out", "Because the sun emits different colored light at different times", "Because our eyes adjust to different lighting conditions"], ans: 1, exp: "Rayleigh scattering disperses short wavelengths (blue) in all directions. At sunset, light travels through more atmosphere, scattering away blue and leaving longer red wavelengths." },
+    { q: "Why is 'weather is cold today, so global warming is fake' a flawed argument?", opts: ["Because cold weather does not exist anymore", "Because weather is what happens today; climate is the pattern over decades, and the two should not be confused", "Because thermometers are unreliable", "Because scientists only measure summer temperatures"], ans: 1, exp: "Climate is the statistical summary of weather over thirty or more years. A cold week does not disprove a warming trend, just as a hot day does not prove it. Confusing the two is the most common error in public climate discussions." },
+    { q: "Why does standing in a forest measurably reduce your stress hormones?", opts: ["Because forests are dark and quiet", "Because trees release phytoncides and the sensory environment activates your parasympathetic nervous system", "Because the color green is everyone's favorite color", "Because walking is exercise and exercise reduces stress"], ans: 1, exp: "Forest bathing research shows that phytoncides (compounds released by trees) enhance immune function, while the sensory environment, absence of urban noise, and visual complexity shift the nervous system toward rest and recovery." },
+    { q: "Why have we mapped Mars better than our own ocean floor?", opts: ["Because the ocean is not interesting to scientists", "Because radar works through space but not through seawater, requiring slow, expensive sonar surveys", "Because Mars is closer than the deep ocean", "Because underwater cameras do not exist"], ans: 1, exp: "Orbital radar maps Mars easily through the vacuum of space. Seawater blocks radar, so ocean floor mapping requires sonar from ships. Only about 25% of the seafloor has been mapped to modern resolution." }
+  ],
+  // PART 4 — Mysteries at the Frontier
+  [
+    { q: "Why is consciousness called 'the hard problem'?", opts: ["Because it requires expensive equipment to study", "Because neuroscience can describe brain activity but cannot explain why physical processes produce subjective experience", "Because nobody has tried to study it", "Because consciousness does not actually exist"], ans: 1, exp: "The 'easy problems' explain functions like attention and memory. The hard problem asks why those functions are accompanied by felt experience at all. No current theory bridges the gap between neural activity and subjective feeling." },
+    { q: "What is the 'Fermi paradox' and why is it unsettling?", opts: ["The paradox that aliens visit Earth but never stay", "The contradiction between the high probability of alien life and the complete silence we observe", "The fact that Fermi never believed in aliens", "The discovery that the universe is too small for life"], ans: 1, exp: "Given billions of habitable planets and billions of years, intelligent life should have spread across the galaxy. Yet we detect no signals, no structures, no visitors. Every possible explanation for the silence is uncomfortable." },
+    { q: "Why do AI researchers say alignment is a 'real and hard' problem?", opts: ["Because AI systems are too slow to align", "Because specifying human values precisely enough for a machine to follow is an unsolved philosophical challenge", "Because AI systems refuse to cooperate", "Because alignment is only a problem in science fiction"], ans: 1, exp: "A system optimizing for a poorly specified goal can produce outcomes that technically satisfy the instruction while violating its intent. We do not agree among ourselves what we want, which makes specifying it for machines deeply difficult." },
+    { q: "Why might fine-tuning of the universe not be as remarkable as it seems?", opts: ["Because the constants have been measured incorrectly", "Because we do not know if the constants could have been different, and our definition of life may be too narrow", "Because the universe is actually not fine-tuned", "Because scientists exaggerate to get funding"], ans: 1, exp: "If the constants are fixed by a deeper theory, asking 'what if they were different' may be meaningless. Additionally, life based on different chemistry might exist in universes with different constants. The claim assumes we know what counts as remarkable." }
+  ],
+  // PART 5 — Mind and Brain
+  [
+    { q: "Why has the popular idea that 'willpower is a muscle that gets depleted' been weakened?", opts: ["Because muscles never get tired", "Because large replication studies failed to consistently reproduce the ego depletion effect", "Because willpower was never studied scientifically", "Because the original researchers admitted to fraud"], ans: 1, exp: "The ego depletion effect, once one of psychology's most popular findings, has not replicated consistently in large-scale studies. What seems to matter more is what you believe about willpower." },
+    { q: "Why does your memory of an event change every time you recall it?", opts: ["Because your brain is broken", "Because during reconsolidation, the memory becomes temporarily unstable and can incorporate new information", "Because you are deliberately changing the story", "Because memories are stored permanently and perfectly"], ans: 1, exp: "Each recall triggers reconsolidation, a process where the memory is rebuilt and can be modified by current emotions, new information, and suggestions. The memories you recall most often are paradoxically the most altered." },
+    { q: "Why is self-compassion more effective than self-criticism for improvement?", opts: ["Because self-compassion means you never hold yourself accountable", "Because self-criticism triggers the threat system, narrowing thinking, while self-compassion activates the care system, broadening it", "Because being nice to yourself is always the right answer", "Because self-criticism has never been studied"], ans: 1, exp: "Kristin Neff's research shows that self-compassion produces greater resilience after failure, more willingness to try again, and less anxiety. People with high self-compassion still hold themselves accountable but without the counterproductive emotional damage." },
+    { q: "Why does the therapist matter more than the specific method of therapy?", opts: ["Because all therapy methods are identical", "Because the therapeutic alliance, the quality of the relationship, is the strongest predictor of whether therapy helps", "Because therapists do not actually use methods", "Because patients always choose the wrong method"], ans: 1, exp: "Decades of outcome research show that trust, mutual respect, and the client's sense of being understood outweigh the specific method used. A warm, skilled CBT therapist will outperform a mediocre EMDR therapist, and the reverse." }
+  ],
+  // PART 6 — Society and Civilization
+  [
+    { q: "Why can humans cooperate with millions of strangers when no other species can?", opts: ["Because humans are the most intelligent species", "Because we can believe in shared fictions like nations, money, and laws that coordinate behavior at scale", "Because governments force cooperation", "Because humans do not actually cooperate that well"], ans: 1, exp: "Shared stories, laws, currencies, and institutions allow millions of strangers to align behavior without knowing each other. No other species can communicate abstract concepts about things that do not physically exist." },
+    { q: "What did the Milgram experiment actually show, when properly understood?", opts: ["That people are evil by nature", "That people blindly obey any authority figure", "That situational pressures can override individual moral judgment more easily than most people believe", "That electric shocks are harmless"], ans: 2, exp: "Participants were not passive robots. Many protested and showed distress. They continued partly due to trust in the experimenter and partly because the situation made stopping difficult. The lesson is about situational pressure, not blind obedience." },
+    { q: "Why does political polarization feel so personal now compared to a generation ago?", opts: ["Because the issues are more important today", "Because partisan identity has merged with racial, religious, and cultural identity into 'mega-identities'", "Because people are less intelligent than before", "Because the media was always this divided"], ans: 1, exp: "When your party is also your tribe, your community, and your cultural identity, political disagreement stops being a policy debate and becomes a threat to your sense of self. The emotional intensity follows." },
+    { q: "Why does 'prebunking' work better than debunking conspiracy theories?", opts: ["Because prebunking uses more facts", "Because it builds critical thinking skills before the person encounters specific misinformation", "Because conspiracy theories are easy to disprove", "Because debunking was never actually attempted"], ans: 1, exp: "Prebunking inoculates people by exposing them to weakened versions of manipulation techniques before they encounter real misinformation. Once a belief is established and tied to identity, it is far harder to dislodge." }
+  ],
+  // PART 7 — Economics and Resources
+  [
+    { q: "Why is money better understood as 'stored trust' than as a physical thing?", opts: ["Because gold is heavy", "Because money only has value because people collectively trust that others will accept it", "Because banks print money secretly", "Because cash does not exist anymore"], ans: 1, exp: "A dollar is paper. Its value comes from the chain of trust that everyone in the transaction will accept it. When that trust breaks during hyperinflation, the paper becomes worthless. The paper never changed. The trust did." },
+    { q: "Why does compound interest reward early investors so disproportionately?", opts: ["Because early investors get special tax breaks", "Because returns earn their own returns over time, and the earliest dollars have the most time to compound", "Because interest rates were higher in the past", "Because banks give bonuses to long-term customers"], ans: 1, exp: "$200/month at 25 produces roughly the same result as $1,000/month at 45, because the early dollars have 20 extra years of compounding. Time is the multiplier nothing else can replace." },
+    { q: "Why does ultra-processed food defeat your willpower?", opts: ["Because willpower does not exist", "Because these foods are engineered to hit the exact sugar/fat/salt ratio that overrides your satiety signals", "Because people are lazy about cooking", "Because natural food tastes better"], ans: 1, exp: "A 2019 NIH study found people given ultra-processed meals consumed roughly 500 more calories per day than those given unprocessed meals. The food is designed to defeat willpower. The playing field is not level." },
+    { q: "Why do financial bubbles keep working on smart people?", opts: ["Because smart people are immune to emotions", "Because intelligence amplifies rationalization, and FOMO overrides judgment when everyone around you is profiting", "Because bubbles are unpredictable", "Because smart people have more money to lose"], ans: 1, exp: "Smart people construct better justifications for emotional decisions. FOMO inverts risk assessment: the moment an investment is most dangerous is the moment it feels most irresistible." }
+  ],
+  // PART 8 — Technology
+  [
+    { q: "Why is your phone's pull-to-refresh gesture compared to a slot machine?", opts: ["Because phones are expensive like gambling", "Because both use variable reward schedules that activate dopamine pathways through unpredictable outcomes", "Because phone companies are run by casinos", "Because you always win when you pull to refresh"], ans: 1, exp: "The gesture creates a micro-moment of anticipation with unpredictable reward, activating the same dopamine pathways as gambling. The similarity between engagement design and addiction mechanics is well documented." },
+    { q: "Why is the question of whether AI 'understands' anything still unresolved?", opts: ["Because nobody has studied AI", "Because we lack an agreed-upon definition of understanding, making the question impossible to settle with current tools", "Because AI clearly understands everything", "Because AI is too new to evaluate"], ans: 1, exp: "Researchers who define understanding functionally see signs of it. Those who define it phenomenologically see none. The disagreement reflects a conceptual gap, not a factual one. We built systems more capable than our existing categories." },
+    { q: "Why is 'I have nothing to hide' a weak argument against privacy concerns?", opts: ["Because everyone has something to hide", "Because privacy is about control and autonomy, not concealment, and surveillance changes behavior even when you are doing nothing wrong", "Because the government does not actually collect data", "Because privacy was never a right"], ans: 1, exp: "The chilling effect is well documented: people behave differently when watched, even when innocent. Privacy protects autonomy, dissent, experimentation, and honesty. A society without privacy is one where conformity becomes the safest strategy." },
+    { q: "Why does technology keep promising to save us time while we feel like we have less?", opts: ["Because technology does not actually work", "Because efficiency gains increase the volume of tasks rather than creating leisure, following the Jevons paradox", "Because we use technology incorrectly", "Because time moves faster now"], ans: 1, exp: "The Jevons paradox: improvements in efficiency do not reduce demand, they increase it. Email made communication faster, so volume exploded. The gains accrue to output, not to the worker." }
+  ],
+  // PART 9 — Meaning and Purpose
+  [
+    { q: "Why does pursuing happiness directly often backfire?", opts: ["Because happiness is an illusion", "Because self-monitoring whether you are happy disrupts the experience itself, creating a gap you keep noticing", "Because happy people are less productive", "Because society punishes happy people"], ans: 1, exp: "When you pursue happiness as a goal, you continuously evaluate your emotional state, becoming a spectator rather than a participant. People who focus on activities and meaning report higher well-being than those who chase the feeling directly." },
+    { q: "Why is 'everything happens for a reason' sometimes harmful after trauma?", opts: ["Because it is always true and people deny it", "Because it assigns cosmic purpose to suffering, shuts down processing, and can feel dismissive or cruel", "Because nothing happens for a reason", "Because trauma survivors do not like hearing phrases"], ans: 1, exp: "The phrase provides premature closure, bypasses the struggle needed for growth, and implies deliberate orchestration of pain. 'I made this mean something' preserves agency while 'it happened for a reason' removes it." },
+    { q: "Why does awareness of mortality tend to clarify priorities rather than produce despair?", opts: ["Because death is not real", "Because conscious engagement with finitude makes choices feel urgent in a productive way, giving them weight", "Because people forget about it quickly", "Because therapists prevent the despair"], ans: 1, exp: "Terror management theory shows that people who consciously process mortality make more meaningful choices. An infinite life would not require priorities. Finitude is what gives your choices their meaning." },
+    { q: "Why does helping others produce a more lasting mood boost than helping yourself?", opts: ["Because it makes you look good", "Because generosity activates the same neural reward pathways as food and connection, and doing it reinforces cooperation instincts", "Because self-help does not work", "Because other people always show gratitude"], ans: 1, exp: "Neuroimaging shows that acts of generosity activate the mesolimbic reward pathway. The effect is strongest with direct personal contact and voluntary action. Evolution wired us to feel good when we cooperate." }
+  ],
+  // PART 10 — Relationships
+  [
+    { q: "Why is loneliness comparable to smoking fifteen cigarettes a day as a health risk?", opts: ["Because lonely people smoke more", "Because isolation triggers chronic inflammation, elevated cortisol, and immune suppression through the same pathways as physical threat", "Because the comparison is only metaphorical", "Because loneliness does not actually affect health"], ans: 1, exp: "The body interprets social disconnection as danger. Isolated individuals show elevated stress hormones, disrupted sleep, immune suppression, and higher rates of cardiovascular disease and cognitive decline." },
+    { q: "Why is 'chemistry' in dating sometimes a trauma response rather than genuine compatibility?", opts: ["Because chemistry does not exist", "Because the nervous system can mistake familiar dysfunction for attraction when early relationships involved unpredictability", "Because trauma makes people unable to feel attraction", "Because dating apps create artificial chemistry"], ans: 1, exp: "If your early relationships involved intensity and intermittent reinforcement, your body may interpret those patterns as attraction. The rush feels like connection but is actually anxiety dressed as excitement." },
+    { q: "What makes contempt the strongest predictor of divorce in Gottman's research?", opts: ["Because contempt involves yelling loudly", "Because it signals a fundamental shift from 'I'm upset' to 'I'm better than you,' poisoning all subsequent interactions", "Because contempt is the same as disagreement", "Because Gottman's research was disproven"], ans: 1, exp: "Contempt communicates disgust and moral superiority. Once that perception takes hold, the contemptuous partner filters everything through a lens of disdain. It corrodes the respect that relationships require to survive." },
+    { q: "Why does co-regulation mean your nervous system is not a closed system?", opts: ["Because everyone shares the same nervous system", "Because one person's physiological state measurably influences another's through tone, posture, and social cues", "Because nervous systems do not actually regulate anything", "Because co-regulation only happens between parents and infants"], ans: 1, exp: "Heart rates synchronize during conversation. Cortisol levels track between partners during conflict. The vagus nerve responds to social cues and adjusts your state accordingly. Regulation is contagious, for better and worse." }
+  ],
+  // PART 11 — How to Think
+  [
+    { q: "Why does intelligence sometimes make people easier to fool rather than harder?", opts: ["Because smart people trust everyone", "Because intelligent people are better at constructing sophisticated justifications for beliefs they hold for emotional reasons", "Because intelligence has no connection to reasoning", "Because foolish people are more skeptical"], ans: 1, exp: "Dan Kahan's research shows that people with higher scientific literacy are more polarized, not less. Intelligence arms your biases with better weapons. The smartest person in the room is sometimes the most persuasively wrong." },
+    { q: "Why does saying 'I'm 70% sure' produce better thinking than saying 'I think so'?", opts: ["Because percentages sound more scientific", "Because expressing confidence in precise probabilities forces more careful thinking and allows accuracy to be measured and improved", "Because people only listen to numbers", "Because 70% is a magic number"], ans: 1, exp: "Philip Tetlock found that superforecasters who expressed beliefs in precise probabilities were the most accurate predictors. The precision forces calibration, and calibration is a skill that improves with practice." },
+    { q: "Why did psychology's replication crisis actually strengthen the field?", opts: ["Because it did not, the field is broken", "Because it exposed systemic problems and led to better practices like pre-registration, larger samples, and open data", "Because the original studies were all confirmed", "Because psychologists stopped doing research"], ans: 1, exp: "The crisis revealed problems with small samples, publication bias, and flexible analysis. The field responded with reforms that have improved rigor. Catching its own errors is exactly what a healthy science does." },
+    { q: "Why is curiosity more persuasive than certainty when trying to change someone's mind?", opts: ["Because curious people are more likeable", "Because curiosity signals respect and lowers defensiveness, opening the conversation to genuine exchange", "Because certainty is always wrong", "Because people change their minds easily when asked"], ans: 1, exp: "Certainty sounds like a verdict. Curiosity sounds like an invitation. Research on difficult conversations shows that the person who asks more questions has more influence than the person who makes more statements." }
+  ],
+  // PART 12 — Examined Life and Integration
+  [
+    { q: "Why does James Pennebaker's expressive writing improve physical health?", opts: ["Because writing exercises your hand muscles", "Because translating chaotic emotional experience into structured narrative reduces the physiological stress of unprocessed feelings", "Because writing distracts you from being sick", "Because Pennebaker's research was only about mental health"], ans: 1, exp: "Unprocessed emotions maintain low-grade physiological stress. Writing organizes the experience into language the brain can categorize and resolve. The health benefits, reduced doctor visits, lower blood pressure, are downstream effects of that cognitive processing." },
+    { q: "Why is the annual review more valuable than annual planning?", opts: ["Because planning is useless", "Because the past contains actual data about what worked and what failed, while the future contains only guesses", "Because you cannot change the future", "Because reviews are required by law"], ans: 1, exp: "Reviewing patterns in a full year of decisions reveals insights invisible in real time. The best next step is usually a scaled-up version of something that already worked, not a brand-new plan from scratch." },
+    { q: "Why is 'doing nothing' sometimes the most productive thing you can do?", opts: ["Because laziness is underrated", "Because the brain consolidates learning, makes creative connections, and processes emotions during rest, not during constant input", "Because productivity is a myth", "Because resting saves energy for later work"], ans: 1, exp: "Memory consolidation happens during rest. The default mode network makes creative associations during mind-wandering. Constant input prevents the diffuse processing that produces insight. Rest is not the absence of productivity. It is a different form of it." },
+    { q: "Why is the book's goal orientation rather than mastery?", opts: ["Because mastery is impossible", "Because information without a framework produces overwhelm, and coherence, seeing how domains connect, is more useful than expertise in any single one", "Because the book is too short for mastery", "Because mastery does not matter"], ans: 1, exp: "Coherence means your understanding of entropy informs your understanding of relationships, your knowledge of bias informs your financial decisions, and mortality informs your priorities. The pieces talk to each other. That is orientation." }
+  ]
+];
+
+let scores = {};
+let currentQuiz = [];
+let currentIdx = 0;
+let currentCorrect = 0;
+let currentMode = null; // 'section' or 'full'
+let currentSectionIdx = null;
+
+function showSections() {
+  document.getElementById('welcomeScreen').classList.add('hidden');
+  document.getElementById('sectionScreen').classList.remove('hidden');
+  renderSections();
+}
+
+function renderSections() {
+  const grid = document.getElementById('sectionGrid');
+  grid.innerHTML = '';
+  SECTIONS.forEach((s, i) => {
+    const done = scores[i] !== undefined;
+    const card = document.createElement('div');
+    card.className = 'section-card' + (done ? ' completed' : '');
+    card.onclick = () => startSection(i);
+    card.innerHTML = `
+      <div class="section-num">${s.num}</div>
+      <div class="section-info">
+        <div class="section-title">${s.title}</div>
+        <div class="section-subtitle">${s.subtitle}</div>
+      </div>
+      ${done ? `<div class="section-score">${scores[i]}/${QUESTIONS[i].length}</div>` : ''}
+      <div class="section-arrow">&#8250;</div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function startSection(idx) {
+  currentMode = 'section';
+  currentSectionIdx = idx;
+  currentQuiz = QUESTIONS[idx].map((q, qi) => ({ ...q, section: idx, qIndex: qi }));
+  currentIdx = 0;
+  currentCorrect = 0;
+  showQuiz();
+}
+
+function startFullQuiz() {
+  currentMode = 'full';
+  currentSectionIdx = null;
+  currentQuiz = [];
+  QUESTIONS.forEach((section, si) => {
+    section.forEach((q, qi) => {
+      currentQuiz.push({ ...q, section: si, qIndex: qi });
+    });
+  });
+  currentIdx = 0;
+  currentCorrect = 0;
+  showQuiz();
+}
+
+function showQuiz() {
+  document.getElementById('sectionScreen').classList.add('hidden');
+  document.getElementById('quizScreen').classList.remove('hidden');
+  document.getElementById('resultsScreen').classList.add('hidden');
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const q = currentQuiz[currentIdx];
+  const total = currentQuiz.length;
+  const section = SECTIONS[q.section];
+
+  document.getElementById('quizPartLabel').textContent = `Part ${section.num}: ${section.title}`;
+  document.getElementById('quizProgressText').textContent = `${currentIdx + 1} of ${total}`;
+  document.getElementById('progressFill').style.width = `${((currentIdx) / total) * 100}%`;
+
+  const letters = ['A', 'B', 'C', 'D'];
+  const block = document.getElementById('questionBlock');
+  block.innerHTML = `
+    <div class="question-number">Question ${currentIdx + 1}</div>
+    <div class="question-text">${q.q}</div>
+    <div class="options" id="optionsContainer">
+      ${q.opts.map((opt, oi) => `
+        <button class="option" onclick="selectAnswer(${oi})" data-idx="${oi}">
+          <span class="option-letter">${letters[oi]}</span>
+          <span>${opt}</span>
+        </button>
+      `).join('')}
+    </div>
+  `;
+  block.style.animation = 'none';
+  block.offsetHeight;
+  block.style.animation = 'fadeUp 0.4s ease';
+}
+
+function selectAnswer(selected) {
+  const q = currentQuiz[currentIdx];
+  const options = document.querySelectorAll('.option');
+  const isCorrect = selected === q.ans;
+
+  if (isCorrect) currentCorrect++;
+
+  options.forEach((opt, i) => {
+    opt.classList.add('disabled');
+    opt.onclick = null;
+    if (i === q.ans) opt.classList.add('correct');
+    if (i === selected && !isCorrect) opt.classList.add('wrong');
+  });
+
+  const container = document.getElementById('optionsContainer');
+  const expDiv = document.createElement('div');
+  expDiv.className = 'explanation';
+  expDiv.innerHTML = `<strong>${isCorrect ? 'Correct.' : 'Not quite.'}</strong> ${q.exp}`;
+  container.after(expDiv);
+
+  const isLast = currentIdx >= currentQuiz.length - 1;
+  const btnNext = document.createElement('button');
+  btnNext.className = 'btn-next';
+  btnNext.textContent = isLast ? 'See Results' : 'Next Question \u2192';
+  btnNext.onclick = () => {
+    if (isLast) {
+      showResults();
+    } else {
+      currentIdx++;
+      renderQuestion();
+    }
+  };
+  expDiv.after(btnNext);
+
+  document.getElementById('progressFill').style.width = `${((currentIdx + 1) / currentQuiz.length) * 100}%`;
+}
+
+function showResults() {
+  document.getElementById('quizScreen').classList.add('hidden');
+  const results = document.getElementById('resultsScreen');
+  results.classList.remove('hidden');
+
+  const total = currentQuiz.length;
+  const pct = Math.round((currentCorrect / total) * 100);
+  const circumference = 2 * Math.PI * 68;
+  const offset = circumference - (pct / 100) * circumference;
+
+  let title, message;
+  if (pct >= 90) { title = "Deeply Oriented"; message = "You did not just read the book. You absorbed it. The ideas have landed and integrated. You are thinking with them, not just about them."; }
+  else if (pct >= 70) { title = "Well Oriented"; message = "Most of the core ideas are solid. A few areas could use a second look, but your framework is strong. You are oriented where it counts."; }
+  else if (pct >= 50) { title = "Partially Oriented"; message = "You have the foundation, but some domains are still fuzzy. That is normal. Consider revisiting the sections where the questions surprised you."; }
+  else { title = "Still Exploring"; message = "Many of these ideas have not fully landed yet. That is not a failure. It is information. Now you know exactly where to re-read with fresh eyes."; }
+
+  // Track section scores
+  if (currentMode === 'section') {
+    scores[currentSectionIdx] = currentCorrect;
+  }
+
+  let breakdownHTML = '';
+  if (currentMode === 'full') {
+    breakdownHTML = `<div class="results-breakdown"><h3>Your Orientation Map</h3>
+      <p style="text-align:center;color:var(--text-dim);font-size:13px;margin-bottom:16px;">Complete individual sections for a domain-by-domain breakdown</p>
+    </div>`;
+  } else if (currentMode === 'section') {
+    const s = SECTIONS[currentSectionIdx];
+    breakdownHTML = `<div class="results-breakdown"><h3>Section Result</h3>
+      <div class="breakdown-item">
+        <span class="breakdown-label">${s.title}</span>
+        <span class="breakdown-score">${currentCorrect}/${total}</span>
+        <div class="breakdown-bar"><div class="breakdown-bar-fill" style="width:${pct}%"></div></div>
+      </div>
+    </div>`;
+  }
+
+  results.innerHTML = `
+    <div class="results-score-ring">
+      <svg width="160" height="160" viewBox="0 0 160 160">
+        <circle class="ring-bg" cx="80" cy="80" r="68"/>
+        <circle class="ring-fill" cx="80" cy="80" r="68"
+          stroke-dasharray="${circumference}"
+          stroke-dashoffset="${circumference}"
+          id="ringFill"/>
+      </svg>
+      <div class="results-score-num">${pct}<span>%</span></div>
+    </div>
+    <h2>${title}</h2>
+    <p>${message}</p>
+    ${breakdownHTML}
+    <div class="btn-group">
+      <button class="btn-secondary" onclick="backToSections()">All Sections</button>
+      <button class="btn-start" onclick="retake()">Retake &#8594;</button>
+    </div>
+  `;
+
+  // Animate ring
+  setTimeout(() => {
+    document.getElementById('ringFill').style.strokeDashoffset = offset;
+  }, 100);
+}
+
+function backToSections() {
+  document.getElementById('resultsScreen').classList.add('hidden');
+  document.getElementById('sectionScreen').classList.remove('hidden');
+  renderSections();
+}
+
+function retake() {
+  if (currentMode === 'section') {
+    startSection(currentSectionIdx);
+  } else {
+    startFullQuiz();
+  }
+}
+</script>
+</body>
+</html>
